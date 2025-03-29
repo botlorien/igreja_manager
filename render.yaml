@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn igreja_manager.wsgi:application
+    startCommand: ./entrypoint.sh
     postDeployScript: |
       python manage.py migrate
       python manage.py collectstatic --noinput
