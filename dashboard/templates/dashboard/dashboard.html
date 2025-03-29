@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Dashboard - {{ igreja.nome }}{% endblock %}
+{% block content %}
+<h2>Dashboard da {{ igreja.nome }}</h2>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card border-success mb-3">
+            <div class="card-body text-success">
+                <h5 class="card-title">Membros totais</h5>
+                <p class="card-text display-6">{{ total_membros }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-info mb-3">
+            <div class="card-body text-info">
+                <h5 class="card-title">Membros recorrentes (ano)</h5>
+                <p class="card-text display-6">{{ recorrentes }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>Faturamento Mensal ({{ igreja.nome }})</h3>
+<canvas id="faturamentoChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('faturamentoChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+            label: 'R$ por mês',
+            data: {{ valores|safe }},
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { callback: value => 'R$ ' + value }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

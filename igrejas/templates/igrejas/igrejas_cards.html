@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Igrejas{% endblock %}
+{% block content %}
+<h2>Igrejas Cadastradas</h2>
+<div class="row">
+    {% for igreja in igrejas %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+            {% if igreja.imagem_da_igreja %}
+                <img src="{{ igreja.imagem_da_igreja.url }}" class="card-img-top" alt="Imagem da Igreja">
+            {% else %}
+                <img src="{% static 'img/default_church.jpg' %}" class="card-img-top" alt="Imagem padrão">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ igreja.nome }}</h5>
+                <p class="card-text">{{ igreja.cidade }} - {{ igreja.estado }}</p>
+                <a href="{% url 'comprovantes:lista' igreja.id %}" class="btn btn-outline-primary">Ver Comprovantes</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

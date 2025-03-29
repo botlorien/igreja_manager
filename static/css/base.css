@@ -1,0 +1,84 @@
+/* 🎨 Paleta personalizada */
+:root {
+    --verde-igreja: #0d3b2e;
+    --cinza-texto: #333;
+    --cinza-claro: #f2f2f2;
+    --branco: #ffffff;
+    --azul-leve: #198754;
+    --fundo-card: #f9f9f9;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--branco);
+    color: var(--cinza-texto);
+    font-size: 1rem;
+}
+
+/* 🧾 Formulários modernos */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+select,
+textarea,
+input[type="file"] {
+    border-radius: 6px;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* 🟢 Botões */
+button, .btn {
+    border-radius: 6px !important;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--verde-igreja);
+    border-color: var(--verde-igreja);
+}
+
+.btn-primary:hover {
+    background-color: #0b2e24;
+}
+
+/* 🧱 Cards */
+.card {
+    border-radius: 10px;
+    border: none;
+    background-color: var(--fundo-card);
+}
+
+.card-title {
+    color: var(--verde-igreja);
+    font-weight: bold;
+}
+
+/* 🌙 Dark Theme overrides */
+[data-bs-theme="dark"] body {
+    background-color: #121212;
+    color: #ddd;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #1f1f1f;
+    border-color: #2e2e2e;
+}
+
+[data-bs-theme="dark"] input,
+[data-bs-theme="dark"] select,
+[data-bs-theme="dark"] textarea {
+    background-color: #2a2a2a;
+    color: #fff;
+    border-color: #444;
+}
+
+[data-bs-theme="dark"] .btn-primary {
+    background-color: #1c4033;
+    border-color: #1c4033;
+}

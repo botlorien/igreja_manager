@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Comprovantes - {{ igreja.nome }}{% endblock %}
+{% block content %}
+<h2>Comprovantes da {{ igreja.nome }}</h2>
+
+<form method="get" class="row mb-3">
+    <div class="col-md-3">
+        {{ filtro.form.membro.label_tag }}
+        {{ filtro.form.membro|add_class:"form-select" }}
+    </div>
+    <div class="col-md-3">
+        {{ filtro.form.tipo.label_tag }}
+        {{ filtro.form.tipo|add_class:"form-select" }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_data_inicio">De</label>
+        <input type="date" name="data_inicio" class="form-control" value="{{ request.GET.data_inicio }}">
+    </div>
+    <div class="col-md-3">
+        <label for="id_data_fim">Até</label>
+        <input type="date" name="data_fim" class="form-control" value="{{ request.GET.data_fim }}">
+    </div>
+
+    <div class="col-12 text-end mt-3">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="{% url 'comprovantes:exportar_excel' igreja.id %}" class="btn btn-success">Exportar Excel</a>
+        <a href="{% url 'comprovantes:novo' %}" class="btn btn-outline-secondary">Novo</a>
+    </div>
+</form>
+
+<table class="table table-bordered table-hover mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Membro</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Arquivo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in comprovantes %}
+        <tr>
+            <td>{{ c.membro.nome }}</td>
+            <td>{{ c.get_tipo_display }}</td>
+            <td>R$ {{ c.valor }}</td>
+            <td>{{ c.data_comprovante|date:"d/m/Y" }}</td>
+            <td>
+                <a href="{{ c.arquivo.url }}" target="_blank">Visualizar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nenhum comprovante encontrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

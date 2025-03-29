@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Visualizar Comprovante{% endblock %}
+{% block content %}
+<h2>Comprovante</h2>
+
+<p><strong>Membro:</strong> {{ comprovante.membro.nome }}</p>
+<p><strong>Tipo:</strong> {{ comprovante.get_tipo_display }}</p>
+<p><strong>Valor:</strong> R$ {{ comprovante.valor }}</p>
+<p><strong>Data:</strong> {{ comprovante.data_comprovante|date:"d/m/Y" }}</p>
+
+<h5>Arquivo:</h5>
+{% if comprovante.arquivo.url.endswith:".pdf" %}
+    <embed src="{{ comprovante.arquivo.url }}" width="100%" height="600px" />
+{% else %}
+    <img src="{{ comprovante.arquivo.url }}" class="img-fluid" />
+{% endif %}
+{% endblock %}
