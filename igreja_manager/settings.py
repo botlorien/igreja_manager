@@ -47,7 +47,20 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
     'django_filters',
+        
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+# Mídia (Cloudinary)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Cloudinary credentials (você vai gerar isso no passo 3)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
