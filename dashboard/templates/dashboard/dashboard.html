@@ -2,7 +2,8 @@
 {% load static %}
 {% block title %}Dashboard - {{ igreja.nome }}{% endblock %}
 {% block content %}
-<h2>Dashboard da {{ igreja.nome }}</h2>
+
+<h2 class="mb-4">Dashboard da {{ igreja.nome }}</h2>
 
 <div class="row mb-4">
     <div class="col-md-4">
@@ -21,10 +22,52 @@
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="card border-warning mb-3">
+            <div class="card-body text-warning">
+                <h5 class="card-title">Faturamento Total</h5>
+                <p class="card-text display-6">R$ {{ total_faturamento|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h3>Faturamento Mensal ({{ igreja.nome }})</h3>
-<canvas id="faturamentoChart"></canvas>
+<form method="get" class="row g-3 align-items-start mb-4">
+
+    <div class="col-12 col-md-4">
+        <label for="membro" class="form-label">Filtrar por Membro</label>
+        <select name="membro" class="form-select">
+            <option value="">Todos</option>
+            {% for m in membros %}
+                <option value="{{ m.id }}" {% if filtros.membro_id == m.id|stringformat:"s" %}selected{% endif %}>
+                    {{ m.nome }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label for="tipo" class="form-label">Filtrar por Tipo</label>
+        <select name="tipo" class="form-select">
+            <option value="">Todos</option>
+            <option value="D" {% if filtros.tipo == 'D' %}selected{% endif %}>Dízimo</option>
+            <option value="O" {% if filtros.tipo == 'O' %}selected{% endif %}>Oferta</option>
+        </select>
+    </div>
+
+    <div class="col-12 col-md-4 d-grid">
+        <label class="form-label invisible">.</label> <!-- espaçador -->
+        <button type="submit" class="btn btn-primary h-100 py-1 px-3 d-flex align-items-center justify-content-center" style="line-height: 1.7;">
+            <i class="bi bi-funnel-fill me-2"></i> Filtrar
+        </button>        
+    </div>
+
+</form>
+
+
+
+<h3>Faturamento Mensal</h3>
+<canvas id="faturamentoChart" height="120"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -45,10 +88,15 @@ new Chart(ctx, {
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { callback: value => 'R$ ' + value }
+                ticks: {
+                    callback: function(value) {
+                        return 'R$ ' + value.toLocaleString('pt-BR');
+                    }
+                }
             }
         }
     }
 });
 </script>
+
 {% endblock %}
