@@ -24,12 +24,12 @@ def dashboard_igreja(request, igreja_id):
         ).aggregate(Sum('valor'))['valor__sum'] or 0
         valores.append(float(total))
 
-    # Membros recorrentes = membros com mais de 3 comprovantes no ano
+    # Membros recorrentes = membros com mais de 2 comprovantes no ano
     ano = datetime.now().year
     recorrentes = Comprovante.objects.filter(
         membro__in=membros,
         data_comprovante__year=ano
-    ).values('membro').annotate(qtd=Count('id')).filter(qtd__gte=3).count()
+    ).values('membro').annotate(qtd=Count('id')).filter(qtd__gte=2).count()
 
     return render(request, 'dashboard/dashboard.html', {
         'igreja': igreja,
