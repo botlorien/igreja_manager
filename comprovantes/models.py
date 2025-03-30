@@ -7,9 +7,16 @@ class Comprovante(models.Model):
         ('D', 'Dízimo'),
         ('O', 'Oferta'),
     ]
+    PAGAMENTO_CHOICES = [
+        ('P', 'Pix/Deposito'),
+        ('D', 'Dinheiro'),
+        ('C', 'Cartão'),
+        ('A', 'A Confirmar'),
+    ]
     membro = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='comprovantes')
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)
+    forma_pagamento = models.CharField(max_length=1, choices=PAGAMENTO_CHOICES, default='A')
     data_comprovante = models.DateField()
     #arquivo = models.FileField(upload_to='comprovantes/')
     arquivo = CloudinaryField('arquivo', 

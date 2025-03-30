@@ -52,6 +52,7 @@
             <tr>
               <th>Membro</th>
               <th>Tipo</th>
+              <th>Forma Pagamento</th>
               <th>Valor</th>
               <th>Data</th>
               <th>Arquivo</th>
@@ -67,6 +68,17 @@
                   <span class="badge text-bg-success">Dízimo</span>
                 {% else %}
                   <span class="badge text-bg-primary">Oferta</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if c.forma_pagamento == 'P' %}
+                  <span class="badge text-bg-info">Pix/Depósito</span>
+                {% elif c.forma_pagamento == 'D' %}
+                  <span class="badge text-bg-secondary">Dinheiro</span>
+                {% elif c.forma_pagamento == 'C' %}
+                  <span class="badge text-bg-warning text-dark">Cartão</span>
+                {% else %}
+                  <span class="badge text-bg-light text-dark">A Confirmar</span>
                 {% endif %}
               </td>
               <td>R$ {{ c.valor }}</td>

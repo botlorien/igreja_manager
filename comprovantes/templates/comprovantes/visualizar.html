@@ -6,6 +6,7 @@
 
 <p><strong>Membro:</strong> {{ comprovante.membro.nome }}</p>
 <p><strong>Tipo:</strong> {{ comprovante.get_tipo_display }}</p>
+<p><strong>Forma Pagamento:</strong> {{ comprovante.get_forma_pagamento_display }}</p>
 <p><strong>Valor:</strong> R$ {{ comprovante.valor }}</p>
 <p><strong>Data:</strong> {{ comprovante.data_comprovante|date:"d/m/Y" }}</p>
 

@@ -5,7 +5,7 @@ from membros.models import Membro
 class ComprovanteForm(forms.ModelForm):
     class Meta:
         model = Comprovante
-        fields = ['membro', 'valor', 'tipo', 'data_comprovante', 'arquivo']
+        fields = ['membro', 'valor', 'tipo', 'forma_pagamento', 'data_comprovante', 'arquivo']
         widgets = {
             'data_comprovante': forms.DateInput(format='%Y-%m-%d', attrs={
                 'type': 'date',
@@ -13,6 +13,7 @@ class ComprovanteForm(forms.ModelForm):
             }),
             'valor': forms.NumberInput(attrs={'class': 'form-control'}),
             'tipo': forms.Select(attrs={'class': 'form-select'}),
+            'forma_pagamento': forms.Select(attrs={'class': 'form-select'}),
             'membro': forms.Select(attrs={'class': 'form-select'}),
             'arquivo': forms.FileInput(attrs={'class': 'form-control'}),
         }
@@ -22,6 +23,6 @@ class ComprovanteForm(forms.ModelForm):
 
         # ⚠️ Isso é crucial para funcionar corretamente com type=date
         self.fields['data_comprovante'].input_formats = ['%Y-%m-%d']
-        
+
         if igreja:
             self.fields['membro'].queryset = Membro.objects.filter(igreja=igreja)
