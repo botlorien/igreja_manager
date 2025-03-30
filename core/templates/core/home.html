@@ -2,25 +2,30 @@
 {% load static %}
 {% block title %}Igrejas{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Igrejas Cadastradas</h2>
-    <div>
-        <a href="{% url 'igrejas:criar' %}" class="btn btn-success me-2">
-            <i class="bi bi-plus-circle"></i> Nova Igreja
-        </a>
-        <a href="{% url 'membros:criar' %}" class="btn btn-primary">
-            <i class="bi bi-person-plus-fill"></i> Novo Membro
-        </a>
+<div class="row align-items-center mb-4">
+    <div class="col-12 col-md-6">
+        <h2 class="mb-3 mb-md-0">Igrejas Cadastradas</h2>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'igrejas:criar' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Nova Igreja
+            </a>
+            <a href="{% url 'membros:criar' %}" class="btn btn-primary">
+                <i class="bi bi-person-plus-fill"></i> Novo Membro
+            </a>
+        </div>
     </div>
 </div>
+
 <div class="row">
     {% for igreja in igrejas %}
-    <div class="col-md-4 col-sm-6 mb-4">
+    <div class="col-12 col-sm-6 col-md-4 mb-4">
         <div class="card h-100 shadow-sm">
             {% if igreja.imagem_da_igreja %}
-                <img src="{{ igreja.imagem_da_igreja.url }}" class="card-img-top" alt="Imagem da Igreja">
+                <img src="{{ igreja.imagem_da_igreja.url }}" class="card-img-top img-igreja" alt="Imagem da Igreja">
             {% else %}
-                <img src="{% static 'img/default_church.jpg' %}" class="card-img-top" alt="Imagem padrão">
+                <img src="{% static 'img/default_church.jpg' %}" class="card-img-top img-igreja" alt="Imagem padrão">
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ igreja.nome }}</h5>
@@ -29,6 +34,6 @@
             </div>
         </div>
     </div>
-    {% endfor %}
+    {% endfor %}    
 </div>
 {% endblock %}

@@ -70,6 +70,10 @@ button, .btn {
     border-color: #2e2e2e;
 }
 
+[data-bs-theme="dark"] .card-title {
+    color: var(--branco);
+}
+
 [data-bs-theme="dark"] input,
 [data-bs-theme="dark"] select,
 [data-bs-theme="dark"] textarea {
@@ -82,3 +86,17 @@ button, .btn {
     background-color: #1c4033;
     border-color: #1c4033;
 }
+
+.img-igreja {
+    height: 200px;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 0.75rem; /* 🔁 bordas arredondadas */
+    border: 1px solid #dee2e6; /* opcional: linha sutil ao redor */
+}
+
+
+

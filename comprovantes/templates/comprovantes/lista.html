@@ -6,71 +6,93 @@
 <h2>Comprovantes da {{ igreja.nome }}</h2>
 
 <form method="get" class="row mb-3">
-    <div class="col-md-3">
-        {{ filtro.form.membro.label_tag }}
-        {{ filtro.form.membro|add_class:"form-select" }}
-    </div>
-    <div class="col-md-3">
-        {{ filtro.form.tipo.label_tag }}
-        {{ filtro.form.tipo|add_class:"form-select" }}
-    </div>
-    <div class="col-md-3">
-        <label for="id_data_inicio">De</label>
-        <input type="date" name="data_inicio" class="form-control" value="{{ request.GET.data_inicio }}">
-    </div>
-    <div class="col-md-3">
-        <label for="id_data_fim">Até</label>
-        <input type="date" name="data_fim" class="form-control" value="{{ request.GET.data_fim }}">
-    </div>
+    <form method="get" class="row gy-3 mb-4">
 
-    <div class="col-12 text-end mt-3">
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-        <a href="{% url 'comprovantes:exportar_excel' igreja.id %}" class="btn btn-success">Exportar Excel</a>
-        <a href="{% url 'comprovantes:novo' igreja.id %}" class="btn btn-outline-secondary">Novo</a>
-        <a href="{% url 'dashboard:index' igreja.id %}" class="btn btn-outline-info btn-sm">
-            <i class="bi bi-bar-chart-line-fill"></i> Dashboard
-        </a>        
-        
-    </div>
-</form>
+        <div class="col-12 col-md-3">
+            {{ filtro.form.membro.label_tag }}
+            {{ filtro.form.membro|add_class:"form-select" }}
+        </div>
+    
+        <div class="col-12 col-md-3">
+            {{ filtro.form.tipo.label_tag }}
+            {{ filtro.form.tipo|add_class:"form-select" }}
+        </div>
+    
+        <div class="col-12 col-md-3">
+            <label for="id_data_inicio">De</label>
+            <input type="date" name="data_inicio" class="form-control" value="{{ request.GET.data_inicio }}">
+        </div>
+    
+        <div class="col-12 col-md-3">
+            <label for="id_data_fim">Até</label>
+            <input type="date" name="data_fim" class="form-control" value="{{ request.GET.data_fim }}">
+        </div>
+    
+        <div class="col-12 d-grid d-md-flex justify-content-md-end gap-2 mt-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-funnel-fill"></i> Filtrar
+            </button>
+            <a href="{% url 'comprovantes:exportar_excel' igreja.id %}" class="btn btn-success">
+                <i class="bi bi-file-earmark-excel-fill"></i> Exportar Excel
+            </a>
+            <a href="{% url 'comprovantes:novo' igreja.id %}" class="btn btn-outline-secondary">
+                <i class="bi bi-plus-circle"></i> Novo
+            </a>
+            <a href="{% url 'dashboard:index' igreja.id %}" class="btn btn-outline-info">
+                <i class="bi bi-bar-chart-line-fill"></i> Dashboard
+            </a>        
+        </div>
+    
+    </form>
+    
 
-<table class="table table-bordered table-hover mt-4">
-    <thead class="table-dark">
-        <tr>
-            <th>Membro</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Arquivo</th>
-            <th>Ações</th> <!-- Nova coluna -->
-        </tr>
-    </thead>
-    <tbody>
-        {% for c in comprovantes %}
-        <tr>
-            <td>{{ c.membro.nome }}</td>
-            <td>{{ c.get_tipo_display }}</td>
-            <td>R$ {{ c.valor }}</td>
-            <td>{{ c.data_comprovante|date:"d/m/Y" }}</td>
-            <td>
-                {% if c.arquivo %}
-                    <a href="{{ c.arquivo.url }}" target="_blank" title="Visualizar comprovante">
-                        <i class="bi bi-file-earmark-text-fill text-primary fs-5"></i>
-                    </a>
+    <div class="table-responsive rounded shadow-sm">
+        <table class="table table-striped align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>Membro</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th>Arquivo</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in comprovantes %}
+            <tr>
+              <td>{{ c.membro.nome }}</td>
+              <td>
+                {% if c.tipo == 'D' %}
+                  <span class="badge text-bg-success">Dízimo</span>
                 {% else %}
-                    <i class="bi bi-file-earmark-excel text-muted fs-5" title="Sem comprovante"></i>
+                  <span class="badge text-bg-primary">Oferta</span>
                 {% endif %}
-            </td>
-            
-            <td>
-                <a href="{% url 'comprovantes:editar' c.id %}" class="btn btn-sm btn-warning">
-                    <i class="bi bi-pencil-square"></i> Editar
+              </td>
+              <td>R$ {{ c.valor }}</td>
+              <td>{{ c.data_comprovante|date:"d/m/Y" }}</td>
+              <td>
+                {% if c.arquivo %}
+                  <a href="{{ c.arquivo.url }}" target="_blank" title="Visualizar comprovante">
+                    <i class="bi bi-file-earmark-text-fill text-primary fs-5"></i>
+                  </a>
+                {% else %}
+                  <i class="bi bi-file-earmark-x text-muted fs-5" title="Sem comprovante"></i>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                <a href="{% url 'comprovantes:editar' c.id %}" class="btn btn-sm btn-outline-warning">
+                  <i class="bi bi-pencil-fill"></i>
                 </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="5">Nenhum comprovante encontrado.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="text-center text-muted py-4">Nenhum comprovante encontrado.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
 {% endblock %}
