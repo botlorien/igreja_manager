@@ -9,4 +9,4 @@ class Membro(models.Model):
     igreja = models.ForeignKey(Igreja, on_delete=models.CASCADE, related_name='membros')
 
     def __str__(self):
-        return self.nome
+        return f'{self.nome} - {self.igreja}'
