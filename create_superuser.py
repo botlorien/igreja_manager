@@ -14,7 +14,7 @@ if not User.objects.filter(username='admin').exists():
     User.objects.create_superuser(
         username='ipjgadmin',
         email='b.hsantossdg@gmail.com',
-        password='admin@ipjg#'
+        password=os.getenv('SUPERUSER_PASSWORD')
     )
 else:
     print("Superusuário já existe.")
