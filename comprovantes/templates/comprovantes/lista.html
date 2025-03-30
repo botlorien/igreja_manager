@@ -26,7 +26,7 @@
     <div class="col-12 text-end mt-3">
         <button type="submit" class="btn btn-primary">Filtrar</button>
         <a href="{% url 'comprovantes:exportar_excel' igreja.id %}" class="btn btn-success">Exportar Excel</a>
-        <a href="{% url 'comprovantes:novo' %}" class="btn btn-outline-secondary">Novo</a>
+        <a href="{% url 'comprovantes:novo' igreja.id %}" class="btn btn-outline-secondary mt-4">Novo</a>
     </div>
 </form>
 
@@ -38,6 +38,7 @@
             <th>Valor</th>
             <th>Data</th>
             <th>Arquivo</th>
+            <th>Ações</th> <!-- Nova coluna -->
         </tr>
     </thead>
     <tbody>
@@ -48,7 +49,19 @@
             <td>R$ {{ c.valor }}</td>
             <td>{{ c.data_comprovante|date:"d/m/Y" }}</td>
             <td>
-                <a href="{{ c.arquivo.url }}" target="_blank">Visualizar</a>
+                {% if c.arquivo %}
+                    <a href="{{ c.arquivo.url }}" target="_blank" title="Visualizar comprovante">
+                        <i class="bi bi-file-earmark-text-fill text-primary fs-5"></i>
+                    </a>
+                {% else %}
+                    <i class="bi bi-file-earmark-excel text-muted fs-5" title="Sem comprovante"></i>
+                {% endif %}
+            </td>
+            
+            <td>
+                <a href="{% url 'comprovantes:editar' c.id %}" class="btn btn-sm btn-warning">
+                    <i class="bi bi-pencil-square"></i> Editar
+                </a>
             </td>
         </tr>
         {% empty %}

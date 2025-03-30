@@ -22,20 +22,47 @@ def lista_comprovantes(request, igreja_id):
     })
 
 @login_required
-def adicionar_comprovante(request):
+def adicionar_comprovante(request, igreja_id):
+    igreja = get_object_or_404(Igreja, id=igreja_id)
+
     if request.method == 'POST':
-        form = ComprovanteForm(request.POST, request.FILES)
+        form = ComprovanteForm(request.POST, request.FILES, igreja=igreja)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('comprovantes:lista', igreja_id=igreja.id)
     else:
-        form = ComprovanteForm()
-    return render(request, 'comprovantes/form.html', {'form': form})
+        form = ComprovanteForm(igreja=igreja)
+
+    return render(request, 'comprovantes/form.html', {
+        'form': form,
+        'igreja': igreja
+    })
 
 @login_required
 def visualizar_comprovante(request, pk):
     comprovante = get_object_or_404(Comprovante, pk=pk)
     return render(request, 'comprovantes/visualizar.html', {'comprovante': comprovante})
+
+
+@login_required
+def editar_comprovante(request, pk):
+    comprovante = get_object_or_404(Comprovante, pk=pk)
+    igreja = comprovante.membro.igreja  # igreja do membro
+
+    if request.method == 'POST':
+        form = ComprovanteForm(request.POST, request.FILES, instance=comprovante, igreja=igreja)
+        if form.is_valid():
+            form.save()
+            return redirect('comprovantes:lista', igreja_id=igreja.id)
+    else:
+        form = ComprovanteForm(instance=comprovante, igreja=igreja)
+
+    return render(request, 'comprovantes/form.html', {
+        'form': form,
+        'comprovante': comprovante,
+        'igreja': igreja
+    })
+
 
 @login_required
 def exportar_excel(request, igreja_id):
@@ -55,7 +82,7 @@ def exportar_excel(request, igreja_id):
             c.get_tipo_display(),
             str(c.valor),
             c.data_comprovante.strftime('%d/%m/%Y'),
-            c.arquivo.url
+            c.arquivo.url if c.arquivo else 'Arquivo não enviado',
         ])
 
     response = HttpResponse(

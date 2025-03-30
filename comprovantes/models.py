@@ -15,6 +15,7 @@ class Comprovante(models.Model):
     arquivo = CloudinaryField('arquivo', 
                                 folder='comprovantes', 
                                 resource_type='auto',
+                                type='upload',
                                 blank=True,   # Permite que o campo seja deixado em branco nos formulários
                                 null=True     # Permite que o campo seja nulo no banco de dados
                                 )  

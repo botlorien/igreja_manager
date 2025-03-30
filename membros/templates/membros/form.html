@@ -1,18 +1,23 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ comprovante|default_if_none:"Novo" }} Comprovante{% endblock %}
+{% block title %}Novo Membro{% endblock %}
+{% load widget_tweaks %}
+
 {% block content %}
-<h2>{{ comprovante|default_if_none:"Novo" }} Comprovante</h2>
-<form method="post" enctype="multipart/form-data" class="p-3 border rounded bg-light shadow-sm">
+<h2>Novo Membro</h2>
+
+<form method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light shadow-sm">
     {% csrf_token %}
     {% for field in form %}
         <div class="mb-3">
             <label class="form-label">{{ field.label }}</label>
-            {{ field }}
+            {{ field|add_class:"form-control" }}
             {% if field.errors %}
                 <div class="text-danger small">{{ field.errors }}</div>
             {% endif %}
         </div>
     {% endfor %}
-    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="submit" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Cadastrar
+    </button>
 </form>
 {% endblock %}
