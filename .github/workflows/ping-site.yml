@@ -4,7 +4,7 @@ on:
   # Agendamento via cron:
   schedule:
     # A sintaxe cron abaixo executa a cada 30 minutos:
-    - cron: '*/10 * * * *'
+    - cron: '*/5 * * * *'
   # Opcional: permite rodar manualmente pelo botão "Run workflow" no GitHub Actions:
   workflow_dispatch:
 
