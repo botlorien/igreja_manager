@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  ipgj-manager:
+    restart: always
+    user: root
+    build: .
+    container_name: ipgj-manager
+    environment:
+      - DATABASE_URL=$DATABASE_URL
+      - DEBUG=$DEBUG
+      - SECRET_KEY_IGREJA_MANAGER=$SECRET_KEY_IGREJA_MANAGER
+      - SUPERUSER_PASSWORD=$SUPERUSER_PASSWORD
+      - CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
+      - CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
+      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_KEY
+    ports:
+      - 8001:8000
+    networks:
+      - postgresql_network
+    deploy:
+      resources:
+        limits:
+          memory: 3000M
+          cpus: '3'
+
+networks:
+  postgresql_network:
+    external: true
+

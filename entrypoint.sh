@@ -10,4 +10,4 @@ echo "➡️ Criando superusuário, se necessário..."
 python create_superuser.py
 
 echo "✅ Iniciando Gunicorn..."
-exec gunicorn igreja_manager.wsgi:application --bind 0.0.0.0:$PORT
+exec gunicorn igreja_manager.wsgi:application --bind 0.0.0.0:8000
