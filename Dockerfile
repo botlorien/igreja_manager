@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y python3 python3
     wget -nc https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get install -f -y ./google-chrome-stable_current_amd64.deb && \
 	apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ntpdate && ntpdate -s time.google.com
 
 RUN ln -fs /usr/share/zoneinfo/America/Cuiaba /etc/localtime
 RUN echo "America/Cuiaba" > /etc/timezone

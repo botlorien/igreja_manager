@@ -13,11 +13,13 @@ services:
       - SUPERUSER_PASSWORD=$SUPERUSER_PASSWORD
       - CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
       - CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
-      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_KEY
+      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET
     ports:
       - 8001:8000
     networks:
       - postgresql_network
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
         limits:
