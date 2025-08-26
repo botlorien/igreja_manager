@@ -43,18 +43,17 @@ COPY --from=builder-image /home/myuser/venv /home/myuser/venv
 
 RUN mkdir /home/myuser/code
 WORKDIR /home/myuser/code
-# Primeiro copie apenas o entrypoint.sh
-COPY entrypoint.sh .
 
-# Depois dê as permissões
-RUN chmod +x ./entrypoint.sh
-
-# Depois copie todo o resto
+# 1. Copie TODOS os arquivos de uma vez
 COPY . .
 
-RUN chown -R myuser:myuser /home/myuser/code
+# 2. AGORA, dê a permissão de execução ao script
+RUN chmod +x ./entrypoint.sh
 
+# O resto continua igual
+RUN chown -R myuser:myuser /home/myuser/code
 USER myuser
+
 
 ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/home/myuser/venv

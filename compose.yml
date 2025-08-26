@@ -1,32 +1,42 @@
-version: '3.8'
-
 services:
-  ipgj-manager:
+  # SERVIÇO DA APLICAÇÃO (CASH PILOT)
+  app:
+    image: ${CI_REGISTRY_IMAGE}:${IMAGE_VERSION:-latest}
     restart: always
-    user: root
-    build: .
-    container_name: ipgj-manager
-    environment:
-      - DATABASE_URL=$DATABASE_URL
-      - DEBUG=$DEBUG
-      - SECRET_KEY_IGREJA_MANAGER=$SECRET_KEY_IGREJA_MANAGER
-      - SUPERUSER_PASSWORD=$SUPERUSER_PASSWORD
-      - CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
-      - CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
-      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET
-    ports:
-      - 8001:8000
+    env_file:
+      - .env.prod
     networks:
-      - postgresql_network
+      - traefik_default 
+      - shared-backend
+    expose: 
+      - 8000
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      # Habilita o Traefik para este serviço
+      - "traefik.enable=true"
+      # Redireciona HTTP para HTTPS
+      - "traefik.http.routers.${CI_PROJECT_NAME}-http.rule=Host(`${CI_PROJECT_NAME}.${DOMAIN_NAME}`)" # Substitua seudominio.com
+      - "traefik.http.routers.${CI_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${CI_PROJECT_NAME}-http.middlewares=redirect-to-https@docker"
+      # Configuração HTTPS
+      - "traefik.http.routers.${CI_PROJECT_NAME}.rule=Host(`${CI_PROJECT_NAME}.${DOMAIN_NAME}`)" # Substitua seudominio.com
+      - "traefik.http.routers.${CI_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${CI_PROJECT_NAME}.tls.certresolver=myresolver"
+      - "traefik.http.routers.${CI_PROJECT_NAME}.service=${CI_PROJECT_NAME}-svc"
+      # Diz ao Traefik para qual porta interna o tráfego deve ser enviado
+      - "traefik.http.services.${CI_PROJECT_NAME}-svc.loadbalancer.server.port=8000"
+      # Habilita o Docker provider para este contêiner
+      - "traefik.docker.network=traefik_default"
     deploy:
       resources:
         limits:
           memory: 3000M
           cpus: '3'
 
+# Seção de redes
 networks:
-  postgresql_network:
+  traefik_default:
+    external: true 
+  shared-backend:
     external: true
-
